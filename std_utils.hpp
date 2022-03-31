@@ -35,7 +35,7 @@ std::vector<std::string> getAllFiles(const std::string& path, std::string subfix
             continue;
         } else if (ptr->d_type == 8) {
             std::string fn(ptr->d_name);
-            std::string fn_subfix(ptr->d_name+fn.length()-4);
+            std::string fn_subfix(ptr->d_name+fn.length()-subfix.length());
             strToLower(fn_subfix);
             if (subfix == "" || subfix == "*" || strcmp(fn_subfix.c_str(), subfix.c_str()) == 0)
                 files.push_back(path + ptr->d_name);
