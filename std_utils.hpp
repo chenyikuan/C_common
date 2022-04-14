@@ -16,8 +16,12 @@ void strToLower(std::string& str)
 }
 
 
-std::vector<std::string> getAllFiles(const std::string& path, std::string subfix = "")
+std::vector<std::string> getAllFiles(const std::string& path_, std::string subfix = "")
 {
+    std::string path = path_;
+    if (path[path.length()-1] != '/') {
+        path += "/";
+    }
     std::vector<std::string> files;
     DIR *dir;
     struct dirent *ptr;

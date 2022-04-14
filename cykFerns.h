@@ -17,11 +17,11 @@ struct cyk_fern_prms
 		validation_ratio(0.f),
 		if_show(true)
 	{}
-	float eta;
-     int S;
-     int M;
-     int R;
-	 float validation_ratio;
+	float eta; /// learning rate
+     int S; /// encoding length
+     int M; /// Ferns num
+     int R; /// random repeat times
+	float validation_ratio;
      bool if_show;
 };
 #endif
