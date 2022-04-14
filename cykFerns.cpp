@@ -153,7 +153,8 @@ arma::fmat cykFerns::fernsRegTrain(arma::fmat data, arma::fmat ys,
         {
 			e_tmp = sqrtf(e*e / ys.n_elem);
 			//cout << "-------------------------------------------------------------" << endl;
-			cout << "| Phase " << setw(3) << m << ":" << setw(9) << e_tmp / e_all * 100 << "% | " << setw(8) << e_tmp << " -> " << flush;
+			// cout << "| Phase " << setw(3) << m << ":" << setw(9) << e_tmp / e_all * 100 << "% | " << setw(8) << e_tmp << " -> " << flush;
+            printf("| Phase %4d: %3.2f\% | %2.4f -> ", m, e_tmp/e_all*100, e_tmp); cout << flush;
         }
 		if_best_exits = false;
         for (int r = 0; r < R; ++r)
@@ -185,7 +186,8 @@ arma::fmat cykFerns::fernsRegTrain(arma::fmat data, arma::fmat ys,
         if (if_show)
         {
 			e_tmp = sqrtf(e*e / ys.n_elem);
-			cout << setw(8) << e_tmp / e_all * 100 << "% | " << e_tmp << endl;
+			// cout << setw(8) << e_tmp / e_all * 100 << "% | " << e_tmp << endl;
+            printf("%3.2f\% | %2.4f\n", e_tmp / e_all * 100, e_tmp);
 			train_state_analysis(ys, ysSum, fn);
         }
     }
