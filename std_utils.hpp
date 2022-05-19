@@ -3,6 +3,8 @@
 
 #include <dirent.h>
 #include <string>
+#include <vector>
+#include <sstream>
 
 
 void strToLower(std::string& str)
@@ -33,6 +35,7 @@ std::vector<std::string> getAllFiles(const std::string& path_, std::string subfi
     if (subfix[0] != '.') {
         subfix = "." + subfix;
     }
+    // printf("subfix: %s\n", subfix.c_str());
     while ((ptr = readdir(dir)) != NULL)
     {
         if (strcmp(ptr->d_name, ".") == 0 || strcmp(ptr->d_name, "..") == 0) {
@@ -41,7 +44,7 @@ std::vector<std::string> getAllFiles(const std::string& path_, std::string subfi
             std::string fn(ptr->d_name);
             std::string fn_subfix(ptr->d_name+fn.length()-subfix.length());
             strToLower(fn_subfix);
-            if (subfix == "" || subfix == "*" || strcmp(fn_subfix.c_str(), subfix.c_str()) == 0)
+            if (subfix == "." || subfix == "*" || strcmp(fn_subfix.c_str(), subfix.c_str()) == 0)
                 files.push_back(path + ptr->d_name);
         } else if (ptr->d_type == 10) {
             continue;
