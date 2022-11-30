@@ -5,9 +5,9 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <cstring>
 
-
-void strToLower(std::string& str)
+inline void strToLower(std::string& str)
 {
     int i = 0;
     while (str[i])
@@ -18,7 +18,7 @@ void strToLower(std::string& str)
 }
 
 
-std::vector<std::string> getAllFiles(const std::string& path_, std::string subfix = "")
+inline std::vector<std::string> getAllFiles(const std::string& path_, std::string subfix = "")
 {
     std::string path = path_;
     if (path[path.length()-1] != '/') {
@@ -57,7 +57,7 @@ std::vector<std::string> getAllFiles(const std::string& path_, std::string subfi
 }
 
 
-std::vector<std::string> stringSplit(const std::string& str, char delim) {
+inline std::vector<std::string> stringSplit(const std::string& str, char delim) {
     std::stringstream ss(str);
     std::string item;
     std::vector<std::string> elems;
