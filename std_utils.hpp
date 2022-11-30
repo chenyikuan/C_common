@@ -7,6 +7,7 @@
 #include <sstream>
 #include <cstring>
 
+
 inline void strToLower(std::string& str)
 {
     int i = 0;
