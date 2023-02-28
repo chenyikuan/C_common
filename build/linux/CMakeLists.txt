@@ -20,20 +20,19 @@ SET(OPT "-O3")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OPT}")
 
 # my own work space
-SET(C_WS ~/Documents/linux/ws)
-SET(CXX_COMMON ${C_WS}/common)
+SET(CXX_COMMON ../..)
 
 # set my project here
 SET(MYLIB CYK_TOOLS)
 SET(SRC_LIST 
 	# main.cpp
-	${CXX_COMMON}/cyk_singleton.cpp
-	${CXX_COMMON}/cykTools.cpp
-	${CXX_COMMON}/cykFerns.cpp
-	${CXX_COMMON}/cykFerns_with_bf.cpp
-	${CXX_COMMON}/cyk_file_tools.cpp
-	${CXX_COMMON}/cykSDH.cpp
-	${CXX_COMMON}/cykSDH_with_ferns.cpp
+	# ${CXX_COMMON}/cykTools.cpp
+	# ${CXX_COMMON}/cykFerns.cpp
+	# ${CXX_COMMON}/cykFerns_with_bf.cpp
+	# ${CXX_COMMON}/cyk_file_tools.cpp
+	# ${CXX_COMMON}/cykSDH.cpp
+	# ${CXX_COMMON}/cykSDH_with_ferns.cpp
+	${CXX_COMMON}/DateUtils.cpp
 )
 
 # ======= for packages =======
