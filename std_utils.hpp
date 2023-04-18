@@ -1,10 +1,29 @@
 #ifndef STD_UTILS_HPP_
 #define STD_UTILS_HPP_
 
+inline void strToLower(std::string& str)
+{
+    int i = 0;
+    while (str[i])
+    {
+        str[i] = (std::tolower(str[i]));
+        i++;
+    }
+}
+
+
 #ifndef _WIN32
 #include <dirent.h>
-std::vector<std::string> getAllFiles(const std::string& path, std::string subfix = "")
+#include <string>
+#include <vector>
+#include <sstream>
+
+inline std::vector<std::string> getAllFiles(const std::string& path_, std::string subfix = "")
 {
+    std::string path = path_;
+    if (path[path.length()-1] != '/') {
+        path += "/";
+    }
     std::vector<std::string> files;
     DIR *dir;
     struct dirent *ptr;
@@ -16,6 +35,7 @@ std::vector<std::string> getAllFiles(const std::string& path, std::string subfix
     if (subfix[0] != '.') {
         subfix = "." + subfix;
     }
+    // printf("subfix: %s\n", subfix.c_str());
     while ((ptr = readdir(dir)) != NULL)
     {
         if (strcmp(ptr->d_name, ".") == 0 || strcmp(ptr->d_name, "..") == 0) {
@@ -24,7 +44,7 @@ std::vector<std::string> getAllFiles(const std::string& path, std::string subfix
             std::string fn(ptr->d_name);
             std::string fn_subfix(ptr->d_name+fn.length()-subfix.length());
             strToLower(fn_subfix);
-            if (subfix == "" || subfix == "*" || strcmp(fn_subfix.c_str(), subfix.c_str()) == 0)
+            if (subfix == "." || subfix == "*" || strcmp(fn_subfix.c_str(), subfix.c_str()) == 0)
                 files.push_back(path + ptr->d_name);
         } else if (ptr->d_type == 10) {
             continue;
@@ -35,10 +55,12 @@ std::vector<std::string> getAllFiles(const std::string& path, std::string subfix
     closedir(dir);
     return files;
 }
+
 #else
+
 #include<io.h>
 #include<stdio.h>
-std::vector<std::string> getAllFiles(std::string path, std::string format)
+inline std::vector<std::string> getAllFiles(std::string path, std::string format)
 {
     std::vector<std::string> files;
     long long hFile = 0;//文件句柄  64位下long 改为 intptr_t
@@ -69,21 +91,8 @@ std::vector<std::string> getAllFiles(std::string path, std::string format)
 
 #endif
 
-#include <string>
 
-
-void strToLower(std::string& str)
-{
-    int i = 0;
-    while (str[i])
-    {
-        str[i] = (std::tolower(str[i]));
-        i++;
-    }
-}
-
-
-std::vector<std::string> stringSplit(const std::string& str, char delim) {
+inline std::vector<std::string> stringSplit(const std::string& str, char delim) {
     std::stringstream ss(str);
     std::string item;
     std::vector<std::string> elems;
