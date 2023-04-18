@@ -1,6 +1,13 @@
 #ifndef STD_UTILS_HPP_
 #define STD_UTILS_HPP_
 
+#include <dirent.h>
+#include <string>
+#include <vector>
+#include <sstream>
+#include <cstring>
+
+
 inline void strToLower(std::string& str)
 {
     int i = 0;
@@ -93,12 +100,22 @@ inline std::vector<std::string> getAllFiles(std::string path, std::string format
 
 
 inline std::vector<std::string> stringSplit(const std::string& str, char delim) {
-    std::stringstream ss(str);
-    std::string item;
+    // std::stringstream ss(str);
+    // std::string item;
+    // std::vector<std::string> elems;
+    // while (std::getline(ss, item, delim)) {
+    //     if (!item.empty()) {
+    //         elems.push_back(item);
+    //     }
+    // }
+    // return elems;
+
     std::vector<std::string> elems;
-    while (std::getline(ss, item, delim)) {
-        if (!item.empty()) {
-            elems.push_back(item);
+    int i = 0;
+    for (int j = 0; j < str.length() - 1; j++) {
+        if (str[j] == delim) {
+            elems.push_back(str.substr(i, j-i));
+            i = j+1;
         }
     }
     return elems;
