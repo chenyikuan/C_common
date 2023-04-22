@@ -38,7 +38,7 @@ inline std::vector<std::string> getAllFiles(const std::string& path_, std::strin
     DIR *dir;
     struct dirent *ptr;
     if ((dir = opendir(path.c_str())) == NULL) {
-        printf("error file name\n");
+        std::cout << "Error folder path: " << path << std::endl;
         exit(-1);
     }
     strToLower(subfix);
@@ -120,6 +120,9 @@ inline std::vector<std::string> stringSplit(const std::string& str, char delim) 
             elems.push_back(str.substr(i, j-i));
             i = j+1;
         }
+    }
+    if (i < str.length()) {
+        elems.push_back(str.substr(i, str.length()-i));
     }
     return elems;
 }
