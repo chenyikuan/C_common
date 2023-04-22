@@ -74,6 +74,7 @@ class progressbar {
       // main function
       inline void update();
       inline void update(const std::string& vc);
+      inline void end();
 
     private:
       int progress;
@@ -201,6 +202,12 @@ inline void progressbar::update(const std::string& vc)
 {
     verbose_chars = vc;
     update();
+}
+
+inline void progressbar::end()
+{
+    output << std::endl << std::flush;
+    return;
 }
 
 #endif
