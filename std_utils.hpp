@@ -1,13 +1,14 @@
 #ifndef STD_UTILS_HPP_
 #define STD_UTILS_HPP_
 
-#ifdef _WIN32
-#else
-#include <dirent.h>
-#include <string>
 #include <vector>
+#include <string>
 #include <sstream>
 #include <cstring>
+#ifdef _WIN32
+#include <cctype>
+#else
+#include <dirent.h>
 #endif
 
 
