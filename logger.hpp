@@ -78,7 +78,8 @@ static std::string GetHomeDirectory()
     std::string homeDir;
     if (homeEnv == nullptr)
     {
-        homeDir.append(getpwuid(getuid())->pw_dir);
+        /// todo
+        // homeDir.append(getpwuid(getuid())->pw_dir);
     }
     else
     {
