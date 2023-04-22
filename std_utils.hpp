@@ -1,11 +1,14 @@
 #ifndef STD_UTILS_HPP_
 #define STD_UTILS_HPP_
 
+#ifdef _WIN32
+#else
 #include <dirent.h>
 #include <string>
 #include <vector>
 #include <sstream>
 #include <cstring>
+#endif
 
 
 inline void strToLower(std::string& str)
