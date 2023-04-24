@@ -41,6 +41,7 @@
 #include <ostream>
 #include <string>
 #include <stdexcept>
+#include <chrono>
 
 class progressbar {
 
@@ -91,6 +92,7 @@ class progressbar {
       std::string verbose_chars="";
 
       std::ostream& output;
+      std::chrono::high_resolution_clock::time_point dbegin;
 };
 
 inline progressbar::progressbar() :
@@ -188,6 +190,25 @@ inline void progressbar::update() {
 
             tail_chars = " "+std::to_string(progress+1)+"/"+std::to_string(n_cycles);
             tail_chars += " "+verbose_chars;
+
+            std::chrono::high_resolution_clock::time_point dend = std::chrono::high_resolution_clock::now();
+            auto selapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(dend - dbegin);
+            dbegin = dend;
+            float seconds = 1.f*selapsedTime.count()/1000;
+            seconds = seconds * (n_cycles - progress);
+            std::string remain_str = " remains ";
+            char tm_str[16];
+            if (seconds > 60) {
+                sprintf(tm_str, "%.2f", seconds/60);
+                std::string tmp = tm_str;
+                remain_str += tmp + " mins      ";
+            } else {
+                sprintf(tm_str, "%.2f", seconds);
+                std::string tmp = tm_str;
+                remain_str += tmp + " secs      ";
+            }
+            tail_chars += remain_str;
+
             output << tail_chars;
         }
     }
