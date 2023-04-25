@@ -92,7 +92,9 @@ class progressbar {
       std::string verbose_chars="";
 
       std::ostream& output;
+      std::chrono::high_resolution_clock::time_point dbegin0;
       std::chrono::high_resolution_clock::time_point dbegin;
+      float last_duration = -1;
 };
 
 inline progressbar::progressbar() :
@@ -105,7 +107,10 @@ inline progressbar::progressbar() :
     todo_char(" "),
     opening_bracket_char("["),
     closing_bracket_char("]"),
-    output(std::cerr) {}
+    output(std::cerr) {
+        dbegin0 = std::chrono::high_resolution_clock::now();
+        dbegin = std::chrono::high_resolution_clock::now();
+    }
 
 inline progressbar::progressbar(int n, bool showbar, std::ostream& out) :
     progress(0),
@@ -117,12 +122,18 @@ inline progressbar::progressbar(int n, bool showbar, std::ostream& out) :
     todo_char(" "),
     opening_bracket_char("["),
     closing_bracket_char("]"),
-    output(out) {}
+    output(out) {
+        dbegin0 = std::chrono::high_resolution_clock::now();
+        dbegin = std::chrono::high_resolution_clock::now();
+    }
 
 inline void progressbar::reset() {
     progress = 0,
     update_is_called = false;
     last_perc = 0;
+    dbegin0 = std::chrono::high_resolution_clock::now();
+    dbegin = std::chrono::high_resolution_clock::now();
+    last_duration = -1;
     return;
 }
 
@@ -191,21 +202,38 @@ inline void progressbar::update() {
             tail_chars = " "+std::to_string(progress+1)+"/"+std::to_string(n_cycles);
             tail_chars += " "+verbose_chars;
 
+            std::string remain_str = " [";
+            char tm_str[16];
             std::chrono::high_resolution_clock::time_point dend = std::chrono::high_resolution_clock::now();
+            std::chrono::duration<float> selapsedTime0 = dend - dbegin0;
+            float seconds0 = selapsedTime0.count();
+            sprintf(tm_str, "%.1f", seconds0);
+            std::string tmp = tm_str;
+            remain_str += tmp + "S";
+            remain_str+=" ETA:";
             auto selapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(dend - dbegin);
             dbegin = dend;
             float seconds = 1.f*selapsedTime.count()/1000;
             seconds = seconds * (n_cycles - progress);
-            std::string remain_str = " remains ";
-            char tm_str[16];
-            if (seconds > 60) {
-                sprintf(tm_str, "%.2f", seconds/60);
-                std::string tmp = tm_str;
-                remain_str += tmp + " mins      ";
+            const int ma_milliseconds = 500;
+            if (selapsedTime.count() < ma_milliseconds) {
+                float r = 1.f * selapsedTime.count() / ma_milliseconds;
+                if (last_duration < 0) {
+                    last_duration = seconds;
+                } else {
+                    last_duration = last_duration * (1.f - r) + seconds * r;
+                }
             } else {
-                sprintf(tm_str, "%.2f", seconds);
+                last_duration = seconds;
+            }
+            if (last_duration > 60) {
+                sprintf(tm_str, "%.2f", last_duration/60);
                 std::string tmp = tm_str;
-                remain_str += tmp + " secs      ";
+                remain_str += tmp + "M]        ";
+            } else {
+                sprintf(tm_str, "%.1f", last_duration);
+                std::string tmp = tm_str;
+                remain_str += tmp + "S]        ";
             }
             tail_chars += remain_str;
 
